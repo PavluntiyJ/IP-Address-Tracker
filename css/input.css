@@ -8,6 +8,9 @@
 
 html {
   font-size: 62.5%; }
+  @media (max-width: 25em) {
+    html {
+      font-size: 50%; } }
 
 #map {
   height: 68vh;
@@ -49,6 +52,10 @@ body {
       -ms-flex-align: center;
           align-items: center;
   gap: 4rem; }
+  @media (max-width: 25em) {
+    .app__header {
+      height: 40vh;
+      gap: 3.5rem; } }
   .app__header-title {
     color: #fff;
     margin-top: 4rem;
@@ -58,6 +65,9 @@ body {
     display: -ms-flexbox;
     display: flex;
     width: 40vw; }
+    @media (max-width: 25em) {
+      .app__header-search {
+        width: 80vw; } }
     .app__header-search-input {
       cursor: pointer;
       -webkit-box-flex: 1;
@@ -98,10 +108,18 @@ body {
           justify-content: space-between;
   width: 60%;
   position: absolute;
-  top: 28rem;
+  top: 30rem;
   left: 50%;
   -webkit-transform: translate(-50%, -30%);
           transform: translate(-50%, -30%); }
+  @media (max-width: 25em) {
+    .app__content-box {
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+          -ms-flex-direction: column;
+              flex-direction: column;
+      width: 80%;
+      padding: 3rem 0; } }
   .app__content-box .flex-item {
     padding: 0 5rem; }
   .app__content-box .flex-item + .flex-item {

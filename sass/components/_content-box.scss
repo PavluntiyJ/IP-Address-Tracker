@@ -8,8 +8,14 @@
   justify-content: space-between;
   width: 60%;
   position: absolute;
-  top: 28rem;
+  top: 30rem;
   left: 50%;
+
+  @media (max-width: 25em) {
+    flex-direction: column;
+    width: 80%;
+    padding: 3rem 0;
+  }
 
   .flex-item {
     padding: 0 5rem;

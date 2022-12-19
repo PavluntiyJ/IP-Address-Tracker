@@ -9,6 +9,10 @@
 html {
   // THis defines what 1 rem is
   font-size: 62.5%; // 1rem = 10px
+
+  @media (max-width: 25em) {
+    font-size: 50%;
+  }
 }
 
 #map {
