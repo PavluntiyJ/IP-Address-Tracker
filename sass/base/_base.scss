@@ -18,6 +18,10 @@ html {
 #map {
   height: 68vh;
   position: relative;
+
+  @media (max-width: 25em) {
+    height: 60vh;
+  }
 }
 
 body {

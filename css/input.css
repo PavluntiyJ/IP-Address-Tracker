@@ -15,6 +15,9 @@ html {
 #map {
   height: 68vh;
   position: relative; }
+  @media (max-width: 25em) {
+    #map {
+      height: 60vh; } }
 
 body {
   -webkit-box-sizing: border-box;
