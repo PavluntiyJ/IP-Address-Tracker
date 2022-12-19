@@ -10,12 +10,17 @@
   @media (max-width: 25em) {
     height: 40vh;
     gap: 3.5rem;
+    text-align: ce;
   }
 
   &-title {
     color: $color-white;
     margin-top: 4rem;
     letter-spacing: 1.5px;
+
+    @media (max-width: 25em) {
+      margin-top: 2.5rem;
+    }
   }
 
   &-search {

@@ -58,11 +58,15 @@ body {
   @media (max-width: 25em) {
     .app__header {
       height: 40vh;
-      gap: 3.5rem; } }
+      gap: 3.5rem;
+      text-align: ce; } }
   .app__header-title {
     color: #fff;
     margin-top: 4rem;
     letter-spacing: 1.5px; }
+    @media (max-width: 25em) {
+      .app__header-title {
+        margin-top: 2.5rem; } }
   .app__header-search {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -122,11 +126,18 @@ body {
           -ms-flex-direction: column;
               flex-direction: column;
       width: 80%;
-      padding: 3rem 0; } }
+      padding: 2.5rem 0;
+      text-align: center; } }
   .app__content-box .flex-item {
     padding: 0 5rem; }
+    @media (max-width: 25em) {
+      .app__content-box .flex-item {
+        padding: 0; } }
   .app__content-box .flex-item + .flex-item {
     border-left: dotted 1px #969696; }
+    @media (max-width: 25em) {
+      .app__content-box .flex-item + .flex-item {
+        border-left: none; } }
   .app__content-box-ip {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -136,6 +147,12 @@ body {
         -ms-flex-direction: column;
             flex-direction: column;
     gap: 2rem; }
+    @media (max-width: 25em) {
+      .app__content-box-ip {
+        gap: 0; } }
+    @media (max-width: 25em) {
+      .app__content-box-ip {
+        margin-bottom: 1.5rem; } }
   .app__content-box-location {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -145,6 +162,12 @@ body {
         -ms-flex-direction: column;
             flex-direction: column;
     gap: 2rem; }
+    @media (max-width: 25em) {
+      .app__content-box-location {
+        gap: 0; } }
+    @media (max-width: 25em) {
+      .app__content-box-location {
+        margin-bottom: 1.5rem; } }
   .app__content-box-timezone {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -154,6 +177,12 @@ body {
         -ms-flex-direction: column;
             flex-direction: column;
     gap: 2rem; }
+    @media (max-width: 25em) {
+      .app__content-box-timezone {
+        gap: 0; } }
+    @media (max-width: 25em) {
+      .app__content-box-timezone {
+        margin-bottom: 1.5rem; } }
   .app__content-box-ISP {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -163,6 +192,9 @@ body {
         -ms-flex-direction: column;
             flex-direction: column;
     gap: 2rem; }
+    @media (max-width: 25em) {
+      .app__content-box-ISP {
+        gap: 0; } }
   .app__content-box-box-header {
     color: #969696;
     text-transform: uppercase;

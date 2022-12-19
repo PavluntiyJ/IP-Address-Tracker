@@ -14,27 +14,46 @@
   @media (max-width: 25em) {
     flex-direction: column;
     width: 80%;
-    padding: 3rem 0;
+    padding: 2.5rem 0;
+    text-align: center;
   }
 
   .flex-item {
     padding: 0 5rem;
+
+    @media (max-width: 25em) {
+      padding: 0;
+    }
   }
 
   .flex-item + .flex-item {
     border-left: dotted 1px $dark-grey;
+
+    @media (max-width: 25em) {
+      border-left: none;
+    }
   }
 
   transform: translate(-50%, -30%);
 
   &-ip {
     @include flexbox;
+
+    @media (max-width: 25em) {
+      margin-bottom: 1.5rem;
+    }
   }
   &-location {
     @include flexbox;
+    @media (max-width: 25em) {
+      margin-bottom: 1.5rem;
+    }
   }
   &-timezone {
     @include flexbox;
+    @media (max-width: 25em) {
+      margin-bottom: 1.5rem;
+    }
   }
   &-ISP {
     @include flexbox;
