@@ -41,13 +41,6 @@ const _loadMap = function (data) {
 ///////////////////////////////////////////
 // CONTENT BOX DATA
 
-const clear = function () {
-  ipText.textContent = "";
-  locationText.textContent = "";
-  timezoneText.textContent = "";
-  ispText.textContent = "";
-};
-
 const enterData = function (data) {
   ipText.textContent = data.ip;
   locationText.textContent = `${data.location.region}, ${data.location.country} `;
@@ -76,8 +69,6 @@ getIP();
 
 searchForm.addEventListener("submit", function (e) {
   e.preventDefault();
-
-  clear();
 
   getIP(input.value);
 

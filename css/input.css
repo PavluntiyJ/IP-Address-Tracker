@@ -59,6 +59,7 @@ body {
     display: flex;
     width: 40vw; }
     .app__header-search-input {
+      cursor: pointer;
       -webkit-box-flex: 1;
           -ms-flex-positive: 1;
               flex-grow: 1;
@@ -74,7 +75,11 @@ body {
       width: 4.8rem;
       border-top-right-radius: 10px;
       border-bottom-right-radius: 10px;
-      cursor: pointer; }
+      cursor: pointer;
+      -webkit-transition: all 0.3s;
+      transition: all 0.3s; }
+      .app__header-search-button:hover {
+        background-color: #2b2b2b; }
       .app__header-search-button-icon {
         color: #fff; }
 
