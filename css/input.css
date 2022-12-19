@@ -13,7 +13,7 @@ html {
       font-size: 50%; } }
 
 #map {
-  height: 68vh;
+  height: 70.5vh;
   position: relative; }
   @media (max-width: 25em) {
     #map {
@@ -205,5 +205,14 @@ body {
       font-weight: 700;
       font-size: 2.2rem;
       word-wrap: normal; }
+
+.footer {
+  background-image: url("../images/pattern-bg.png");
+  background-size: cover;
+  text-align: center;
+  color: #fff; }
+  .footer a {
+    text-decoration: none;
+    color: #969696; }
 
 /*# sourceMappingURL=input.css.map */
