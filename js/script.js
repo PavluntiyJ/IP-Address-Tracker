@@ -67,7 +67,9 @@ async function getIP(ip = "") {
     enterData(result);
     _loadMap(result);
   } catch (err) {
-    console.error(`something went wrong! ${err} `);
+    alert(
+      `Invalid IP address or domain name format (e.g google.com). Try again!`
+    );
   }
 }
 getIP();
