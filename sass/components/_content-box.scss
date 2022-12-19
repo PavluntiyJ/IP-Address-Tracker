@@ -1,0 +1,50 @@
+.app__content-box {
+  background-color: $color-white;
+  z-index: 999;
+  padding: 6rem 3rem;
+  border-radius: 15px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  display: flex;
+  justify-content: space-between;
+  width: 60%;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+
+  .flex-item {
+    padding: 0 5rem;
+  }
+
+  .flex-item + .flex-item {
+    border-left: dotted 1px $dark-grey;
+  }
+
+  transform: translate(-50%, -30%);
+
+  &-ip {
+    @include flexbox;
+  }
+  &-location {
+    @include flexbox;
+  }
+  &-timezone {
+    @include flexbox;
+  }
+  &-ISP {
+    @include flexbox;
+  }
+
+  &-box-header {
+    color: $dark-grey;
+    text-transform: uppercase;
+    font-weight: $semi-bold-text;
+    font-size: $default-font-size;
+    letter-spacing: 1px;
+
+    &-text {
+      font-weight: $bold-text;
+      font-size: 2.2rem;
+      word-wrap: normal;
+    }
+  }
+}

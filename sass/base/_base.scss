@@ -1,0 +1,30 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  // THis defines what 1 rem is
+  font-size: 62.5%; // 1rem = 10px
+}
+
+#map {
+  height: 65vh;
+  position: relative;
+}
+
+body {
+  box-sizing: border-box;
+  font-family: "Rubik", sans-serif;
+  font-size: 1.8rem;
+  $regular-text: 400;
+  position: relative;
+
+  input {
+    font-size: inherit;
+    font-weight: inherit;
+  }
+}

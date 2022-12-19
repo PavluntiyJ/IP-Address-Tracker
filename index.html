@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- displays site properly based on user's device -->
+
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./images/favicon-32x32.png"
+    />
+
+    <title>Frontend Mentor | IP Address Tracker</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+      integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+      crossorigin=""
+    />
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script
+      src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+      integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+      crossorigin=""
+    ></script>
+
+    <link rel="stylesheet" href="css/input.css" />
+    <script defer src="js/script.js"></script>
+  </head>
+  <body>
+    <main class="app">
+      <div class="app__header">
+        <h1 class="app__header-title">IP Address Tracker</h1>
+        <form class="app__header-search">
+          <input
+            type="text"
+            aria-label="search-bar"
+            placeholder="Search for any IP address or domain"
+            class="app__header-search-input"
+            id="search"
+          />
+          <button type="submit" class="app__header-search-button" id="search">
+            <i
+              class="fa-solid fa-chevron-right app__header-search-button-icon"
+            ></i>
+          </button>
+        </form>
+      </div>
+
+      <div class="app__content-box">
+        <div class="app__content-box-ip flex-item">
+          <h3 class="app__content-box-box-header">IP Address</h3>
+          <p class="app__content-box-box-header-text ip-text"></p>
+        </div>
+        <div class="app__content-box-location flex-item">
+          <h3 class="app__content-box-box-header">Location</h3>
+          <p class="app__content-box-box-header-text location-text"></p>
+        </div>
+        <div class="app__content-box-timezone flex-item">
+          <h3 class="app__content-box-box-header">Timezone</h3>
+          <p class="app__content-box-box-header-text timezone-text"></p>
+        </div>
+        <div class="app__content-box-ISP flex-item">
+          <h3 class="app__content-box-box-header">ISP</h3>
+          <p class="app__content-box-box-header-text ISP-text"></p>
+        </div>
+      </div>
+
+      <div class="app__map" id="map"></div>
+      <!-- add offset value dynamically using the API -->
+    </main>
+
+    <!-- <footer class="footer">
+      <div class="attribution">
+        Challenge by
+        <a href="https://www.frontendmentor.io?ref=challenge" target="_blank"
+          >Frontend Mentor</a
+        >. Coded by <a href="#">PavelJ</a>.
+      </div>
+    </footer> -->
+    <script
+      src="https://kit.fontawesome.com/e844154187.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
