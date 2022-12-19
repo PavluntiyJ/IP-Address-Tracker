@@ -15,4 +15,6 @@
 .DS_Store
 .node_modules
 .sass-cache/
-*css/input.css.map
+*.css.map
+*.sass.map
+*.scss.map
