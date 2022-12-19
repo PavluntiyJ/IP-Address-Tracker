@@ -48,23 +48,11 @@ const clear = function () {
   ispText.textContent = "";
 };
 
-const enterInitialData = function (data) {
+const enterData = function (data) {
   ipText.textContent = data.ip;
   locationText.textContent = `${data.location.region}, ${data.location.country} `;
   timezoneText.textContent = `UTC ${data.location.timezone}`;
   ispText.textContent = data.isp;
-};
-
-const enterData = function (data) {
-  if (data.error === true) alert("Wrong IP or domain address! Try again");
-  clear();
-  ipText.textContent = data.ip;
-  locationText.textContent = `${data.city}, ${data.country_name} `;
-  timezoneText.textContent = `UTC ${data.utc_offset.slice(
-    0,
-    3
-  )}:${data.utc_offset.slice(3, data.utc_offset.length)}`;
-  ispText.textContent = data.org;
 };
 
 ///////////////////////////////////////////
@@ -75,10 +63,11 @@ async function getIP(ip = "") {
       `https://geo.ipify.org/api/v2/country,city?apiKey=at_q4IZJeuXydMW9QbuK0J5L9iYXj8WA&domain=${ip}`
     );
     let result = await response.json();
-    enterInitialData(result);
+
+    enterData(result);
     _loadMap(result);
-  } catch {
-    console.error(`something went wrong`);
+  } catch (err) {
+    console.error(`something went wrong! ${err} `);
   }
 }
 getIP();

@@ -10,7 +10,7 @@ html {
   font-size: 62.5%; }
 
 #map {
-  height: 65vh;
+  height: 68vh;
   position: relative; }
 
 body {
@@ -37,7 +37,7 @@ body {
 .app__header {
   background-image: url("../images/pattern-bg.png");
   background-size: cover;
-  height: 35vh;
+  height: 30rem;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -93,7 +93,7 @@ body {
           justify-content: space-between;
   width: 60%;
   position: absolute;
-  top: 30%;
+  top: 28rem;
   left: 50%;
   -webkit-transform: translate(-50%, -30%);
           transform: translate(-50%, -30%); }
