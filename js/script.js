@@ -18,34 +18,24 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 }).addTo(map);
 
-const locationIcon = L.icon({
-  iconUrl: "../images/icon-location.svg",
-
-  iconSize: [40, 50], // size of the icon
-  iconAnchor: [20, 50], // point of the icon which will correspond to marker's location
-});
-
 ////////////////////////////////
-//////////////////////////////
 const _loadMap = function (data) {
   const latitude = data.location.lat;
   const longitude = data.location.lng;
-
   const coords = [latitude, longitude];
 
   map.setView(coords, 13);
 
-  L.marker(coords).addTo(map).bindPopup(`GOVNO`).openPopup();
-};
+  // MARKER
 
-const moveMap = function (data) {
-  const { latitude } = data;
-  const { longitude } = data;
-  const coords = [latitude, longitude];
+  const locationIcon = L.icon({
+    iconUrl: "../images/icon-location.svg",
 
-  map.panTo(coords, 13);
+    iconSize: [40, 50], // size of the icon
+    iconAnchor: [20, 50], // point of the icon which will correspond to marker's location
+  });
 
-  L.marker(coords).addTo(map).bindPopup(`location`).openPopup();
+  L.marker(coords, { icon: locationIcon }).addTo(map).openPopup();
 };
 
 ///////////////////////////////////////////
@@ -87,7 +77,6 @@ async function getIP(ip = "") {
     let result = await response.json();
     enterInitialData(result);
     _loadMap(result);
-    // if (!ip) contentBox.innerHTML = "";
   } catch {
     console.error(`something went wrong`);
   }
@@ -104,15 +93,3 @@ searchForm.addEventListener("submit", function (e) {
   input.value = "";
   input.blur();
 });
-//////////////////////////////////////////////////////////
-// IP TO COORDS API
-// const getCoordByIP = async function (ip = "") {
-//   try {
-//     let response = await fetch(`https://ipapi.co/${ip}/json/`);
-//     let result = await response.json();
-//     enterData(result);
-//     moveMap(result);
-//   } catch (err) {
-//     console.error(`something went wrong! ${err}`);
-//   }
-// };
