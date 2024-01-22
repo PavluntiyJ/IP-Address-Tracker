@@ -7,7 +7,6 @@ This is a solution to the [IP address tracker challenge on Frontend Mentor](http
 - [Overview](#overview)
   - [The challenge](#the-challenge)
   - [Links](#links)
-- [My process](#my-process)
   - [Built with](#built-with)
 
 ## Overview
@@ -22,11 +21,7 @@ Users should be able to:
 - Search for any IP addresses or domains and see the key information and location
 
 ### Links
-
-- Solution URL: [Add solution URL here](https://your-solution-url.com)
 - Live Site URL: [https://ip-address-application.netlify.app/]
-
-## My process
 
 ### Built with
 
@@ -35,3 +30,4 @@ Users should be able to:
 - Flexbox
 - Desktop-first workflow
 - SCSS
+- JavaScript
