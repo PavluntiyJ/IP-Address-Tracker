@@ -53,7 +53,7 @@ const enterData = function (data) {
 async function getIP(ip = "") {
   try {
     let response = await fetch(
-      `https://geo.ipify.org/api/v2/country,city?apiKey=at_q4IZJeuXydMW9QbuK0J5L9iYXj8WA&domain=${ip}`
+      `https://geo.ipify.org/api/v2/country,city?apiKey=at_X9I9qNOscUQP2Nv5wO8CUwvqWGaDE&domain=${ip}`
     );
     let result = await response.json();
 
