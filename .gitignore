@@ -18,3 +18,9 @@
 *.css.map
 *.sass.map
 *.scss.map
+
+node_modules/
+dist/
+*.log
+.vscode/
+.DS_Store
