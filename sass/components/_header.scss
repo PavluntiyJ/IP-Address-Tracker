@@ -9,14 +9,18 @@
 
   .error {
     color: red;
-    background-color: #fdd;
-    border: 1px solid red;
     padding: 10px;
-    margin: 10px 0;
+    margin: -4rem 0 0 -7rem; // Remove default margin
     border-radius: 5px;
+    z-index: 1000;
+    position: relative;
+
+    @media (max-width: 27em) {
+      margin: -4rem 0 0 3rem; // Remove default margin
+    }
   }
 
-  @media (max-width: 25em) {
+  @media (max-width: 27em) {
     height: 40vh;
     gap: 3.5rem;
     text-align: ce;
@@ -27,7 +31,7 @@
     margin-top: 4rem;
     letter-spacing: 1.5px;
 
-    @media (max-width: 25em) {
+    @media (max-width: 27em) {
       margin-top: 2.5rem;
     }
   }
@@ -36,7 +40,7 @@
     display: flex;
     width: 40vw;
 
-    @media (max-width: 25em) {
+    @media (max-width: 27em) {
       width: 80vw;
     }
 

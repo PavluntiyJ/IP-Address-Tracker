@@ -11,7 +11,7 @@
   top: 30rem;
   left: 50%;
 
-  @media (max-width: 25em) {
+  @media (max-width: 27em) {
     flex-direction: column;
     width: 80%;
     padding: 2.5rem 0;
@@ -21,7 +21,7 @@
   .flex-item {
     padding: 0 5rem;
 
-    @media (max-width: 25em) {
+    @media (max-width: 27em) {
       padding: 0;
     }
   }
@@ -29,7 +29,7 @@
   .flex-item + .flex-item {
     border-left: dotted 1px $dark-grey;
 
-    @media (max-width: 25em) {
+    @media (max-width: 27em) {
       border-left: none;
     }
   }
@@ -39,19 +39,19 @@
   &-ip {
     @include flexbox;
 
-    @media (max-width: 25em) {
+    @media (max-width: 27em) {
       margin-bottom: 1.5rem;
     }
   }
   &-location {
     @include flexbox;
-    @media (max-width: 25em) {
+    @media (max-width: 27em) {
       margin-bottom: 1.5rem;
     }
   }
   &-timezone {
     @include flexbox;
-    @media (max-width: 25em) {
+    @media (max-width: 27em) {
       margin-bottom: 1.5rem;
     }
   }

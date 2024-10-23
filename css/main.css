@@ -9,7 +9,7 @@
 html {
   font-size: 62.5%;
 }
-@media (max-width: 25em) {
+@media (max-width: 27em) {
   html {
     font-size: 50%;
   }
@@ -19,7 +19,7 @@ html {
   height: 70.5vh;
   position: relative;
 }
-@media (max-width: 25em) {
+@media (max-width: 27em) {
   #map {
     height: 60vh;
   }
@@ -58,13 +58,18 @@ body input {
 }
 .app__header .error {
   color: red;
-  background-color: #fdd;
-  border: 1px solid red;
   padding: 10px;
-  margin: 10px 0;
+  margin: -4rem 0 0 -7rem;
   border-radius: 5px;
+  z-index: 1000;
+  position: relative;
 }
-@media (max-width: 25em) {
+@media (max-width: 27em) {
+  .app__header .error {
+    margin: -4rem 0 0 3rem;
+  }
+}
+@media (max-width: 27em) {
   .app__header {
     height: 40vh;
     gap: 3.5rem;
@@ -76,7 +81,7 @@ body input {
   margin-top: 4rem;
   letter-spacing: 1.5px;
 }
-@media (max-width: 25em) {
+@media (max-width: 27em) {
   .app__header-title {
     margin-top: 2.5rem;
   }
@@ -85,7 +90,7 @@ body input {
   display: flex;
   width: 40vw;
 }
-@media (max-width: 25em) {
+@media (max-width: 27em) {
   .app__header-search {
     width: 80vw;
   }
@@ -130,7 +135,7 @@ body input {
   left: 50%;
   transform: translate(-50%, -30%);
 }
-@media (max-width: 25em) {
+@media (max-width: 27em) {
   .app__content-box {
     flex-direction: column;
     width: 80%;
@@ -141,7 +146,7 @@ body input {
 .app__content-box .flex-item {
   padding: 0 5rem;
 }
-@media (max-width: 25em) {
+@media (max-width: 27em) {
   .app__content-box .flex-item {
     padding: 0;
   }
@@ -149,7 +154,7 @@ body input {
 .app__content-box .flex-item + .flex-item {
   border-left: dotted 1px hsl(0, 0%, 59%);
 }
-@media (max-width: 25em) {
+@media (max-width: 27em) {
   .app__content-box .flex-item + .flex-item {
     border-left: none;
   }
@@ -159,12 +164,12 @@ body input {
   flex-direction: column;
   gap: 2rem;
 }
-@media (max-width: 25em) {
+@media (max-width: 27em) {
   .app__content-box-ip {
     gap: 0;
   }
 }
-@media (max-width: 25em) {
+@media (max-width: 27em) {
   .app__content-box-ip {
     margin-bottom: 1.5rem;
   }
@@ -174,12 +179,12 @@ body input {
   flex-direction: column;
   gap: 2rem;
 }
-@media (max-width: 25em) {
+@media (max-width: 27em) {
   .app__content-box-location {
     gap: 0;
   }
 }
-@media (max-width: 25em) {
+@media (max-width: 27em) {
   .app__content-box-location {
     margin-bottom: 1.5rem;
   }
@@ -189,12 +194,12 @@ body input {
   flex-direction: column;
   gap: 2rem;
 }
-@media (max-width: 25em) {
+@media (max-width: 27em) {
   .app__content-box-timezone {
     gap: 0;
   }
 }
-@media (max-width: 25em) {
+@media (max-width: 27em) {
   .app__content-box-timezone {
     margin-bottom: 1.5rem;
   }
@@ -204,7 +209,7 @@ body input {
   flex-direction: column;
   gap: 2rem;
 }
-@media (max-width: 25em) {
+@media (max-width: 27em) {
   .app__content-box-ISP {
     gap: 0;
   }

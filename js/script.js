@@ -75,7 +75,7 @@ function displayError(message) {
   errorDiv.className = "error";
   errorDiv.textContent = message;
   appHeader.appendChild(errorDiv); // Append to contentBox instead of body
-  // setTimeout(() => errorDiv.remove(), 5000); // Error message disappears after 5 seconds
+  setTimeout(() => errorDiv.remove(), 5000); // Error message disappears after 5 seconds
 }
 
 // Initial call
