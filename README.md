@@ -5,11 +5,13 @@ This is a solution to the [IP address tracker challenge on Frontend Mentor](http
 ## Table of contents
 
 - [Overview](#overview)
-  - [The challenge](#the-challenge)
-  - [Links](#links)
-  - [Built with](#built-with)
+- [The challenge](#the-challenge)
+- [Links](#links)
+- [Built with](#built-with)
 
 ## Overview
+
+The IP Address Tracker is a web application designed to provide detailed information about any IP address entered by the user. The app leverages the IP Geolocation API to fetch and display data, including the location (region and country), time zone, and Internet Service Provider (ISP) for the specified IP address. Additionally, it features a dynamic map to visually pinpoint the location.
 
 ### The challenge
 
@@ -21,13 +23,17 @@ Users should be able to:
 - Search for any IP addresses or domains and see the key information and location
 
 ### Links
+
 - Live Site URL: [https://ip-address-application.netlify.app/]
 
 ### Built with
 
-- Semantic HTML5 markup
-- CSS custom properties
-- Flexbox
-- Desktop-first workflow
-- SCSS
-- JavaScript
+    HTML5: For the structure and layout of the application.
+
+    CSS3/SCSS: For styling and responsiveness, ensuring a visually appealing and adaptable interface.
+
+    JavaScript (ES6): For fetching data from the API, handling user interactions, and dynamically updating the UI.
+
+    Leaflet.js: For rendering the interactive map.
+
+    IP Geolocation API: For retrieving detailed information about the IP address.
