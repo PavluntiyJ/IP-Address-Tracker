@@ -7,6 +7,15 @@
   align-items: center;
   gap: 4rem;
 
+  .error {
+    color: red;
+    background-color: #fdd;
+    border: 1px solid red;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+  }
+
   @media (max-width: 25em) {
     height: 40vh;
     gap: 3.5rem;

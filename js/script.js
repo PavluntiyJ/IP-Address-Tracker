@@ -8,6 +8,8 @@ const contentBox = document.querySelector(".app__content-box");
 const input = document.querySelector(".app__header-search-input");
 const searchForm = document.querySelector(".app__header-search");
 
+const appHeader = document.querySelector(".app__header");
+
 ///////////////////////////////////////////
 // LEAFLET MAP
 // GLOBAL
@@ -55,23 +57,34 @@ async function getIP(ip = "") {
     let response = await fetch(
       `https://geo.ipify.org/api/v2/country,city?apiKey=at_X9I9qNOscUQP2Nv5wO8CUwvqWGaDE&domain=${ip}`
     );
+    if (!response.ok)
+      throw new Error(
+        "Invalid IP address or domain name format (e.g google.com). Try again!"
+      );
+    // process result
     let result = await response.json();
-
     enterData(result);
     _loadMap(result);
   } catch (err) {
-    alert(
-      `Invalid IP address or domain name format (e.g google.com). Try again!`
-    );
+    displayError("Error: " + err.message);
   }
 }
+
+function displayError(message) {
+  const errorDiv = document.createElement("div");
+  errorDiv.className = "error";
+  errorDiv.textContent = message;
+  appHeader.appendChild(errorDiv); // Append to contentBox instead of body
+  // setTimeout(() => errorDiv.remove(), 5000); // Error message disappears after 5 seconds
+}
+
+// Initial call
 getIP();
 
+// Event listener for form submission
 searchForm.addEventListener("submit", function (e) {
   e.preventDefault();
-
   getIP(input.value);
-
   input.value = "";
   input.blur();
 });

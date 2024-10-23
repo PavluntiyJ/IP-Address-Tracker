@@ -1,0 +1,234 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 62.5%;
+}
+@media (max-width: 25em) {
+  html {
+    font-size: 50%;
+  }
+}
+
+#map {
+  height: 70.5vh;
+  position: relative;
+}
+@media (max-width: 25em) {
+  #map {
+    height: 60vh;
+  }
+}
+
+body {
+  box-sizing: border-box;
+  font-family: "Rubik", sans-serif;
+  font-size: 1.8rem;
+  position: relative;
+}
+body input {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.text-centered {
+  align-self: center;
+  justify-self: center;
+  font-size: 1.8rem;
+  transition: all 0.3s;
+}
+
+.text-red {
+  color: #dc0000;
+}
+
+.app__header {
+  background-image: url("../images/pattern-bg.png");
+  background-size: cover;
+  height: 30rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4rem;
+}
+.app__header .error {
+  color: red;
+  background-color: #fdd;
+  border: 1px solid red;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+}
+@media (max-width: 25em) {
+  .app__header {
+    height: 40vh;
+    gap: 3.5rem;
+    text-align: ce;
+  }
+}
+.app__header-title {
+  color: #fff;
+  margin-top: 4rem;
+  letter-spacing: 1.5px;
+}
+@media (max-width: 25em) {
+  .app__header-title {
+    margin-top: 2.5rem;
+  }
+}
+.app__header-search {
+  display: flex;
+  width: 40vw;
+}
+@media (max-width: 25em) {
+  .app__header-search {
+    width: 80vw;
+  }
+}
+.app__header-search-input {
+  cursor: pointer;
+  flex-grow: 1;
+  border: none;
+  display: inline-block;
+  padding: 2rem 2.4rem;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  outline: none;
+}
+.app__header-search-button {
+  border: none;
+  background-color: black;
+  width: 4.8rem;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.app__header-search-button:hover {
+  background-color: hsl(0, 0%, 17%);
+}
+.app__header-search-button-icon {
+  color: #fff;
+}
+
+.app__content-box {
+  background-color: #fff;
+  z-index: 999;
+  padding: 6rem 3rem;
+  border-radius: 15px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  display: flex;
+  justify-content: space-between;
+  width: 60%;
+  position: absolute;
+  top: 30rem;
+  left: 50%;
+  transform: translate(-50%, -30%);
+}
+@media (max-width: 25em) {
+  .app__content-box {
+    flex-direction: column;
+    width: 80%;
+    padding: 2.5rem 0;
+    text-align: center;
+  }
+}
+.app__content-box .flex-item {
+  padding: 0 5rem;
+}
+@media (max-width: 25em) {
+  .app__content-box .flex-item {
+    padding: 0;
+  }
+}
+.app__content-box .flex-item + .flex-item {
+  border-left: dotted 1px hsl(0, 0%, 59%);
+}
+@media (max-width: 25em) {
+  .app__content-box .flex-item + .flex-item {
+    border-left: none;
+  }
+}
+.app__content-box-ip {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+@media (max-width: 25em) {
+  .app__content-box-ip {
+    gap: 0;
+  }
+}
+@media (max-width: 25em) {
+  .app__content-box-ip {
+    margin-bottom: 1.5rem;
+  }
+}
+.app__content-box-location {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+@media (max-width: 25em) {
+  .app__content-box-location {
+    gap: 0;
+  }
+}
+@media (max-width: 25em) {
+  .app__content-box-location {
+    margin-bottom: 1.5rem;
+  }
+}
+.app__content-box-timezone {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+@media (max-width: 25em) {
+  .app__content-box-timezone {
+    gap: 0;
+  }
+}
+@media (max-width: 25em) {
+  .app__content-box-timezone {
+    margin-bottom: 1.5rem;
+  }
+}
+.app__content-box-ISP {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+@media (max-width: 25em) {
+  .app__content-box-ISP {
+    gap: 0;
+  }
+}
+.app__content-box-box-header {
+  color: hsl(0, 0%, 59%);
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+}
+.app__content-box-box-header-text {
+  font-weight: 700;
+  font-size: 2.2rem;
+  word-wrap: normal;
+}
+
+.footer {
+  background-image: url("../images/pattern-bg.png");
+  background-size: cover;
+  text-align: center;
+  color: #fff;
+}
+.footer a {
+  text-decoration: none;
+  color: hsl(0, 0%, 59%);
+}/*# sourceMappingURL=main.css.map */
