@@ -13,6 +13,12 @@ This is a solution to the [IP address tracker challenge on Frontend Mentor](http
 
 The IP Address Tracker is a web application designed to provide detailed information about any IP address entered by the user. The app leverages the IP Geolocation API to fetch and display data, including the location (region and country), time zone, and Internet Service Provider (ISP) for the specified IP address. Additionally, it features a dynamic map to visually pinpoint the location.
 
+## Screenshot
+
+
+![image](https://github.com/user-attachments/assets/687c2f15-f7c2-4bc4-bd9c-3f9379d5f37e)
+
+
 ### The challenge
 
 Users should be able to:
@@ -37,3 +43,5 @@ Users should be able to:
     Leaflet.js: For rendering the interactive map.
 
     IP Geolocation API: For retrieving detailed information about the IP address.
+
+    
