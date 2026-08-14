@@ -28,3 +28,6 @@ dist/
 .env.local
 .dev.vars
 coverage/
+
+# Local Netlify folder
+.netlify

@@ -40,6 +40,17 @@ export default tseslint.config(
     },
   },
   {
+    files: ["netlify/**/*.ts"],
+    extends: [...tseslint.configs.recommendedTypeChecked],
+    languageOptions: {
+      parserOptions: {
+        project: "./tsconfig.netlify.json",
+        tsconfigRootDir: import.meta.dirname,
+      },
+      globals: globals.node,
+    },
+  },
+  {
     files: ["*.ts"],
     extends: [...tseslint.configs.recommendedTypeChecked],
     languageOptions: {

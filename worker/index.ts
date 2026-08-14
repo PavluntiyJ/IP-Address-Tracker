@@ -23,6 +23,7 @@ function corsHeaders(request: Request, env: Env) {
   const headers = new Headers({
     "Access-Control-Allow-Headers": "Content-Type",
     "Access-Control-Allow-Methods": "GET, OPTIONS",
+    "Cache-Control": "no-store",
     "Content-Type": "application/json; charset=utf-8",
     Vary: "Origin",
   });
@@ -94,7 +95,10 @@ export default {
       );
     }
 
-    const connectingIp = request.headers.get("CF-Connecting-IP")?.trim() ?? "";
+    const connectingIp =
+      request.headers.get("CF-Connecting-IP")?.trim() ||
+      request.headers.get("X-NF-Client-Connection-IP")?.trim() ||
+      "";
     const query =
       submittedQuery ||
       (connectingIp && !isPrivateAddress(connectingIp) ? connectingIp : "");

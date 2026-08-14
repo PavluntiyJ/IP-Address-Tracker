@@ -9,7 +9,7 @@
     "type": "git",
     "url": "https://github.com/PavluntiyJ/IP-Address-Tracker.git"
   },
-  "homepage": "https://github.com/PavluntiyJ/IP-Address-Tracker#readme",
+  "homepage": "https://ip-address-application.netlify.app/",
   "bugs": "https://github.com/PavluntiyJ/IP-Address-Tracker/issues",
   "keywords": [
     "ip-address",

@@ -80,4 +80,24 @@ describe("lookup worker", () => {
     expect(response.status).toBe(200);
     expect(requestedProviderUrl.searchParams.has("ipAddress")).toBe(false);
   });
+
+  it("uses Netlify's trusted visitor address for an initial lookup", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(
+        new Response(JSON.stringify(providerResult), { status: 200 }),
+      );
+    vi.stubGlobal("fetch", fetchMock);
+    const request = new Request("https://api.example.com/api/lookup", {
+      headers: { "X-NF-Client-Connection-IP": "203.0.113.42" },
+    });
+
+    const response = await worker.fetch(request, env);
+    const requestedProviderUrl = new URL(String(fetchMock.mock.calls[0]?.[0]));
+
+    expect(response.status).toBe(200);
+    expect(requestedProviderUrl.searchParams.get("ipAddress")).toBe(
+      "203.0.113.42",
+    );
+  });
 });

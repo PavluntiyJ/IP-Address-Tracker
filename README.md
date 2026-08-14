@@ -1,5 +1,7 @@
 # Trace IP Address Tracker
 
+[![Live Demo](https://img.shields.io/badge/live-Netlify-00c7b7?logo=netlify&logoColor=white)](https://ip-address-application.netlify.app/)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/b8207f2b-aa9c-4253-93fa-3154424811a0/deploy-status)](https://app.netlify.com/projects/ip-address-application/deploys)
 [![CI](https://github.com/PavluntiyJ/IP-Address-Tracker/actions/workflows/ci.yml/badge.svg)](https://github.com/PavluntiyJ/IP-Address-Tracker/actions/workflows/ci.yml)
 ![Version](https://img.shields.io/badge/version-2.0.0-ff6b35)
 ![React](https://img.shields.io/badge/React-19-61dafb)
@@ -7,76 +9,136 @@
 
 Trace resolves an IP address or domain into its approximate location, timezone, and network provider, then plots the result on an interactive map.
 
-The application is a React and TypeScript rewrite of the [Frontend Mentor IP address tracker challenge](https://www.frontendmentor.io/challenges/ip-address-tracker-I8-0yYAH0). A Cloudflare Worker proxies Geo.IPify requests so the provider credential is never shipped to the browser.
+**[Open the live application](https://ip-address-application.netlify.app/)**
 
-## Version 2.0
+Version 2.0 is a complete React and TypeScript rebuild of the [Frontend Mentor IP address tracker challenge](https://www.frontendmentor.io/challenges/ip-address-tracker-I8-0yYAH0). The production application and protected API run on Netlify's free plan.
 
-- Complete React 19 and TypeScript rewrite
-- New responsive network-intelligence interface
+## Features
+
+- Automatic lookup of the visitor's public IP address
+- IPv4, IPv6, and domain searches
+- Approximate city, region, timezone, ISP, and coordinates
 - Persistent Leaflet map with animated coordinate transitions
-- Server-side Geo.IPify proxy with input validation and restricted CORS
-- Abort-safe searches and accessible loading and error states
-- Runtime response validation shared by the browser and Worker
+- Responsive desktop and mobile interface
+- Accessible loading, validation, and error states
+- Abort-safe requests that prevent stale searches from replacing newer results
+- Server-side Geo.IPify access with no API credential in the browser bundle
+- Runtime response validation shared by every deployment target
 - Automated tests, strict linting, formatting, builds, and GitHub CI
-
-## Stack
-
-- React 19 and TypeScript
-- Vite
-- Leaflet and React Leaflet
-- Zod runtime validation shared by the client and Worker
-- Cloudflare Workers
-- Vitest and Testing Library
 
 ## Architecture
 
 ```text
-Browser (React) -> /api/lookup -> Cloudflare Worker -> Geo.IPify
-       |                                  |
-       +---------- Leaflet map            +-- private API key
+React + Vite client
+        |
+        | GET /api/lookup?q=example.com
+        v
+Netlify Function adapter
+        |
+        v
+Shared validated lookup handler ---- server-only API key
+        |
+        v
+Geo.IPify API ----> normalized JSON ----> Leaflet map
 ```
 
-The browser only receives normalized location data. `IPIFY_API_KEY` lives in a Cloudflare secret in production and `.dev.vars` locally; both secret locations are excluded from Git.
+Production uses a same-origin Netlify Function, so the browser does not need CORS configuration or a public provider key. The same handler can also be deployed as a Cloudflare Worker through `wrangler.jsonc`.
+
+## Stack
+
+- React 19 and TypeScript 6
+- Vite 8
+- Leaflet and React Leaflet
+- Zod runtime validation
+- Netlify Functions and optional Cloudflare Workers
+- Vitest and Testing Library
+- ESLint and Prettier
+- GitHub Actions and Dependabot
+
+## Project Structure
+
+```text
+src/                    React application, map, styles, and tests
+shared/lookup.ts        Shared API response schema and type
+worker/index.ts         Platform-neutral lookup handler
+netlify/functions/      Production Netlify adapter
+public/                 Static public assets
+netlify.toml            Build, functions, and security-header config
+wrangler.jsonc          Optional Cloudflare Worker config
+```
 
 ## Local Development
 
 Requirements: Node.js 24.15 or newer and a [Geo.IPify](https://geo.ipify.org/) API key.
 
+### Netlify Environment
+
+This is the closest match to production:
+
 1. Install dependencies with `npm install`.
-2. Copy `.dev.vars.example` to `.dev.vars` and replace the placeholder key.
-3. Start the Worker with `npm run worker:dev`.
-4. In another terminal, start Vite with `npm run dev`.
-5. Open `http://localhost:5173`.
+2. Copy `.env.example` to `.env`.
+3. Set `IPIFY_API_KEY` in `.env`.
+4. Start the application with `npx netlify-cli dev`.
+5. Open `http://localhost:8888`.
 
-Vite proxies `/api` to Wrangler on port `8787`. The initial request uses Cloudflare's connecting-IP header when available; submitting the form accepts an IPv4 address, IPv6 address, or domain.
+### Cloudflare Environment
 
-## Checks
+The optional Worker setup runs in two terminals:
 
-Run every quality gate with:
+1. Copy `.dev.vars.example` to `.dev.vars` and set `IPIFY_API_KEY`.
+2. Start the Worker with `npm run worker:dev`.
+3. Start Vite with `npm run dev`.
+4. Open `http://localhost:5173`.
+
+Vite proxies `/api` to Wrangler on port `8787` in this mode.
+
+## Quality Checks
+
+Run every local quality gate with:
 
 ```sh
 npm run check
 ```
 
-Individual commands are available as `npm run format`, `npm run lint`, `npm test`, `npm run typecheck`, and `npm run build`.
-
-The same quality gates run automatically through GitHub Actions for every push and pull request targeting `main`.
+This runs formatting validation, typed ESLint rules, all tests, TypeScript project builds, and the Vite production build. The same command runs automatically through GitHub Actions for every push and pull request targeting `main`.
 
 ## Deployment
 
-1. Authenticate Wrangler with `npx wrangler login`.
-2. Save the provider key with `npx wrangler secret put IPIFY_API_KEY`.
-3. Set `ALLOWED_ORIGIN` in `wrangler.jsonc` to the deployed frontend origin.
-4. Deploy the API with `npm run worker:deploy`.
-5. Set `VITE_API_URL` to the deployed Worker URL ending in `/api/lookup` when building the frontend.
-6. Build the frontend with `npm run build` and deploy `dist/` to a static host.
+### Netlify
 
-For multiple trusted frontends, `ALLOWED_ORIGIN` accepts a comma-separated list of exact origins.
+The repository is connected to Netlify and configured by `netlify.toml`. Every push to `main` builds the frontend and deploys the `lookup` function automatically.
 
-## Environment
+For a new Netlify site:
 
-| Variable         | Location                     | Purpose                                              |
-| ---------------- | ---------------------------- | ---------------------------------------------------- |
-| `IPIFY_API_KEY`  | Worker secret or `.dev.vars` | Authenticates server-side Geo.IPify requests         |
-| `ALLOWED_ORIGIN` | `wrangler.jsonc`             | Restricts browser access to trusted frontend origins |
-| `VITE_API_URL`   | Frontend build environment   | Points the browser at the deployed Worker endpoint   |
+1. Import this GitHub repository in Netlify.
+2. Add `IPIFY_API_KEY` as a Netlify environment variable.
+3. Deploy; Netlify reads the build command, publish directory, function directory, Node version, and security headers from `netlify.toml`.
+
+### Cloudflare Worker
+
+Cloudflare deployment is optional:
+
+1. Authenticate with `npx wrangler login`.
+2. Save the key with `npx wrangler secret put IPIFY_API_KEY`.
+3. Configure `ALLOWED_ORIGIN` in `wrangler.jsonc`.
+4. Deploy with `npm run worker:deploy`.
+5. Set frontend `VITE_API_URL` to the Worker URL ending in `/api/lookup`.
+
+Both Netlify and Cloudflare provide free tiers suitable for this project.
+
+## Environment Variables
+
+| Variable         | Location                                                   | Purpose                                                  |
+| ---------------- | ---------------------------------------------------------- | -------------------------------------------------------- |
+| `IPIFY_API_KEY`  | Netlify environment, `.env`, Worker secret, or `.dev.vars` | Authenticates server-side Geo.IPify requests             |
+| `ALLOWED_ORIGIN` | `wrangler.jsonc`                                           | Restricts browser access when using Cloudflare           |
+| `VITE_API_URL`   | Frontend build environment                                 | Overrides the default same-origin `/api/lookup` endpoint |
+
+## Security
+
+- Provider credentials are excluded from Git and never embedded in frontend assets.
+- Search input is length-limited and validated before contacting Geo.IPify.
+- Provider failures are converted into safe client-facing messages.
+- API responses use `Cache-Control: no-store`.
+- Production responses include frame, MIME-sniffing, referrer, and browser-permission headers.
+- CORS is restricted when the standalone Cloudflare deployment is used.
