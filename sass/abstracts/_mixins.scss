@@ -1,9 +1,0 @@
-@mixin flexbox {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-
-  @media (max-width: 27em) {
-    gap: 0;
-  }
-}

@@ -1,47 +1,82 @@
-# Frontend Mentor - IP address tracker solution
+# Trace IP Address Tracker
 
-This is a solution to the [IP address tracker challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/ip-address-tracker-I8-0yYAH0).
+[![CI](https://github.com/PavluntiyJ/IP-Address-Tracker/actions/workflows/ci.yml/badge.svg)](https://github.com/PavluntiyJ/IP-Address-Tracker/actions/workflows/ci.yml)
+![Version](https://img.shields.io/badge/version-2.0.0-ff6b35)
+![React](https://img.shields.io/badge/React-19-61dafb)
+![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6)
 
-## Table of contents
+Trace resolves an IP address or domain into its approximate location, timezone, and network provider, then plots the result on an interactive map.
 
-- [Overview](#overview)
-- [The challenge](#the-challenge)
-- [Links](#links)
-- [Built with](#built-with)
+The application is a React and TypeScript rewrite of the [Frontend Mentor IP address tracker challenge](https://www.frontendmentor.io/challenges/ip-address-tracker-I8-0yYAH0). A Cloudflare Worker proxies Geo.IPify requests so the provider credential is never shipped to the browser.
 
-## Overview
+## Version 2.0
 
-The IP Address Tracker is a web application designed to provide detailed information about any IP address entered by the user. The app leverages the IP Geolocation API to fetch and display data, including the location (region and country), time zone, and Internet Service Provider (ISP) for the specified IP address. Additionally, it features a dynamic map to visually pinpoint the location.
+- Complete React 19 and TypeScript rewrite
+- New responsive network-intelligence interface
+- Persistent Leaflet map with animated coordinate transitions
+- Server-side Geo.IPify proxy with input validation and restricted CORS
+- Abort-safe searches and accessible loading and error states
+- Runtime response validation shared by the browser and Worker
+- Automated tests, strict linting, formatting, builds, and GitHub CI
 
-## Screenshot
+## Stack
 
+- React 19 and TypeScript
+- Vite
+- Leaflet and React Leaflet
+- Zod runtime validation shared by the client and Worker
+- Cloudflare Workers
+- Vitest and Testing Library
 
-![image](https://github.com/user-attachments/assets/687c2f15-f7c2-4bc4-bd9c-3f9379d5f37e)
+## Architecture
 
+```text
+Browser (React) -> /api/lookup -> Cloudflare Worker -> Geo.IPify
+       |                                  |
+       +---------- Leaflet map            +-- private API key
+```
 
-### The challenge
+The browser only receives normalized location data. `IPIFY_API_KEY` lives in a Cloudflare secret in production and `.dev.vars` locally; both secret locations are excluded from Git.
 
-Users should be able to:
+## Local Development
 
-- View the optimal layout for each page depending on their device's screen size
-- See hover states for all interactive elements on the page
-- See their own IP address on the map on the initial page load
-- Search for any IP addresses or domains and see the key information and location
+Requirements: Node.js 24.15 or newer and a [Geo.IPify](https://geo.ipify.org/) API key.
 
-### Links
+1. Install dependencies with `npm install`.
+2. Copy `.dev.vars.example` to `.dev.vars` and replace the placeholder key.
+3. Start the Worker with `npm run worker:dev`.
+4. In another terminal, start Vite with `npm run dev`.
+5. Open `http://localhost:5173`.
 
-- Live Site URL: [https://ip-address-application.netlify.app/]
+Vite proxies `/api` to Wrangler on port `8787`. The initial request uses Cloudflare's connecting-IP header when available; submitting the form accepts an IPv4 address, IPv6 address, or domain.
 
-### Built with
+## Checks
 
-    HTML5: For the structure and layout of the application.
+Run every quality gate with:
 
-    CSS3/SCSS: For styling and responsiveness, ensuring a visually appealing and adaptable interface.
+```sh
+npm run check
+```
 
-    JavaScript (ES6): For fetching data from the API, handling user interactions, and dynamically updating the UI.
+Individual commands are available as `npm run format`, `npm run lint`, `npm test`, `npm run typecheck`, and `npm run build`.
 
-    Leaflet.js: For rendering the interactive map.
+The same quality gates run automatically through GitHub Actions for every push and pull request targeting `main`.
 
-    IP Geolocation API: For retrieving detailed information about the IP address.
+## Deployment
 
-    
+1. Authenticate Wrangler with `npx wrangler login`.
+2. Save the provider key with `npx wrangler secret put IPIFY_API_KEY`.
+3. Set `ALLOWED_ORIGIN` in `wrangler.jsonc` to the deployed frontend origin.
+4. Deploy the API with `npm run worker:deploy`.
+5. Set `VITE_API_URL` to the deployed Worker URL ending in `/api/lookup` when building the frontend.
+6. Build the frontend with `npm run build` and deploy `dist/` to a static host.
+
+For multiple trusted frontends, `ALLOWED_ORIGIN` accepts a comma-separated list of exact origins.
+
+## Environment
+
+| Variable         | Location                     | Purpose                                              |
+| ---------------- | ---------------------------- | ---------------------------------------------------- |
+| `IPIFY_API_KEY`  | Worker secret or `.dev.vars` | Authenticates server-side Geo.IPify requests         |
+| `ALLOWED_ORIGIN` | `wrangler.jsonc`             | Restricts browser access to trusted frontend origins |
+| `VITE_API_URL`   | Frontend build environment   | Points the browser at the deployed Worker endpoint   |

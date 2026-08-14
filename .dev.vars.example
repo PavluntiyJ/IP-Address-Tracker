@@ -1,0 +1,2 @@
+# Copy this file to .dev.vars for local Worker development.
+IPIFY_API_KEY=your_ipify_api_key
