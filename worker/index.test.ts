@@ -63,6 +63,41 @@ describe("lookup worker", () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
+  it("forwards a compressed IPv6 query as an address", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockImplementation(() =>
+        Promise.resolve(
+          new Response(JSON.stringify(providerResult), { status: 200 }),
+        ),
+      );
+    vi.stubGlobal("fetch", fetchMock);
+    const request = new Request(
+      "https://api.example.com/api/lookup?q=2001%3Adb8%3A%3A1",
+    );
+
+    const response = await worker.fetch(request, env);
+    const requestedProviderUrl = new URL(String(fetchMock.mock.calls[0]?.[0]));
+
+    expect(response.status).toBe(200);
+    expect(requestedProviderUrl.searchParams.get("ipAddress")).toBe(
+      "2001:db8::1",
+    );
+  });
+
+  it("rejects malformed IPv6 input before contacting the provider", async () => {
+    const fetchMock = vi.fn();
+    vi.stubGlobal("fetch", fetchMock);
+    const request = new Request(
+      "https://api.example.com/api/lookup?q=zzz%3A%3A1",
+    );
+
+    const response = await worker.fetch(request, env);
+
+    expect(response.status).toBe(400);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
   it("does not forward a local development address as the visitor IP", async () => {
     const fetchMock = vi
       .fn()

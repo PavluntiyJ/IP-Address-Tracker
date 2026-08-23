@@ -9,7 +9,8 @@ interface Env {
 }
 
 const lookupPath = "/api/lookup";
-const validAddress = /^(?:[a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+$|^[a-fA-F0-9:.]+$/;
+const validAddress =
+  /^(?:[a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+$|^\d{1,3}(?:\.\d{1,3}){3}$|^(?!.*:::)(?:[a-fA-F0-9]{0,4}:){2,7}[a-fA-F0-9]{0,4}$/;
 const defaultRateLimitMax = 30;
 const defaultRateLimitWindowMs = 60_000;
 
