@@ -3,7 +3,7 @@
 [![Live Demo](https://img.shields.io/badge/live-Netlify-00c7b7?logo=netlify&logoColor=white)](https://ip-address-application.netlify.app/)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/b8207f2b-aa9c-4253-93fa-3154424811a0/deploy-status)](https://app.netlify.com/projects/ip-address-application/deploys)
 [![CI](https://github.com/PavluntiyJ/IP-Address-Tracker/actions/workflows/ci.yml/badge.svg)](https://github.com/PavluntiyJ/IP-Address-Tracker/actions/workflows/ci.yml)
-![Version](https://img.shields.io/badge/version-2.0.1-ff6b35)
+![Version](https://img.shields.io/github/package-json/v/PavluntiyJ/IP-Address-Tracker/main?color=ff6b35&label=version)
 ![React](https://img.shields.io/badge/React-19-61dafb)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6)
 
