@@ -51,7 +51,7 @@ Production uses a same-origin Netlify Function, so the browser does not need COR
 - Vite 8
 - Leaflet and React Leaflet
 - Zod runtime validation
-- Netlify Functions and optional Cloudflare Workers
+- Netlify Functions, Edge Functions, and optional Cloudflare Workers
 - Vitest and Testing Library
 - ESLint and Prettier
 - GitHub Actions and Dependabot
