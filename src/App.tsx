@@ -1,8 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import type { LookupResult } from "../shared/lookup";
 import { lookupAddress } from "./api";
-import { MapPanel } from "./MapPanel";
+
+const LazyMapPanel = lazy(() =>
+  import("./MapPanel").then((module) => ({ default: module.MapPanel })),
+);
 
 type LoadState = "loading" | "success" | "error";
 
@@ -17,6 +20,16 @@ function locationLabel(result: LookupResult) {
   ]
     .filter(Boolean)
     .join(", ");
+}
+
+function MapFallback() {
+  return (
+    <section className="map-panel" aria-label="Location map">
+      <div className="map-panel__loading" aria-hidden="true">
+        <span /> Establishing map coordinates
+      </div>
+    </section>
+  );
 }
 
 export default function App() {
@@ -185,7 +198,9 @@ export default function App() {
                 : "Awaiting coordinates"}
             </span>
           </div>
-          <MapPanel result={result} />
+          <Suspense fallback={<MapFallback />}>
+            <LazyMapPanel result={result} />
+          </Suspense>
         </div>
       </main>
     </div>
