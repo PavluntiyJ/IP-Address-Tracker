@@ -72,6 +72,9 @@ describe("App", () => {
     expect(
       screen.getByText("Enter an IP address or domain to begin a search."),
     ).toBeInTheDocument();
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Enter an IP address or domain to begin a search.",
+    );
     expect(lookupAddress).toHaveBeenCalledTimes(1);
   });
 });

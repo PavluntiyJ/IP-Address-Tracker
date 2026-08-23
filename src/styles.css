@@ -174,7 +174,7 @@ a {
 }
 
 .eyebrow,
-.details__heading p,
+.details__heading h2,
 .map-meta {
   font-family: "IBM Plex Mono", Consolas, monospace;
   font-size: 0.69rem;
@@ -332,9 +332,10 @@ main {
   align-items: center;
 }
 
-.details__heading p {
+.details__heading h2 {
   margin: 0;
   color: #536461;
+  font-weight: 600;
 }
 
 .details__index {

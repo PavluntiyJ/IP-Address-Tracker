@@ -145,8 +145,8 @@ export default function App() {
           <div
             id="lookup-message"
             className={`lookup-message ${error ? "lookup-message--visible" : ""}`}
-            role="status"
-            aria-live="polite"
+            role={error ? "alert" : "status"}
+            aria-live={error ? "assertive" : "polite"}
           >
             {error || (isLoading ? "Resolving network coordinates..." : "")}
           </div>
@@ -158,7 +158,7 @@ export default function App() {
           <div className="details__heading">
             <div>
               <span className="details__index">01</span>
-              <p>Resolved endpoint</p>
+              <h2>Resolved endpoint</h2>
             </div>
             <span className={`signal ${isLoading ? "signal--loading" : ""}`}>
               {isLoading ? "Acquiring" : result ? "Locked" : "Standby"}
@@ -177,8 +177,8 @@ export default function App() {
         </section>
 
         <div className="map-wrap">
-          <div className="map-meta" aria-hidden="true">
-            <span>02 / Coordinate plot</span>
+          <div className="map-meta">
+            <span aria-hidden="true">02 / Coordinate plot</span>
             <span>
               {result
                 ? `${result.location.lat.toFixed(4)} / ${result.location.lng.toFixed(4)}`
