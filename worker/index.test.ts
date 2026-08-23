@@ -136,6 +136,33 @@ describe("lookup worker", () => {
     );
   });
 
+  it("caches explicit queries at the edge but never personal lookups", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockImplementation(() =>
+        Promise.resolve(
+          new Response(JSON.stringify(providerResult), { status: 200 }),
+        ),
+      );
+    vi.stubGlobal("fetch", fetchMock);
+
+    const queried = await worker.fetch(
+      new Request("https://api.example.com/api/lookup?q=8.8.8.8"),
+      env,
+    );
+    expect(queried.headers.get("Cache-Control")).toBe(
+      "public, max-age=0, s-maxage=60, stale-while-revalidate=300",
+    );
+
+    const personal = await worker.fetch(
+      new Request("https://api.example.com/api/lookup", {
+        headers: { "X-NF-Client-Connection-IP": "203.0.113.42" },
+      }),
+      env,
+    );
+    expect(personal.headers.get("Cache-Control")).toBe("no-store");
+  });
+
   it("throttles bursts from one client and recovers after the window", async () => {
     vi.useFakeTimers();
     try {

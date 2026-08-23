@@ -172,7 +172,11 @@ export default {
         );
       }
 
-      return json(request, env, result.data);
+      return json(request, env, result.data, 200, {
+        "Cache-Control": submittedQuery
+          ? "public, max-age=0, s-maxage=60, stale-while-revalidate=300"
+          : "no-store",
+      });
     } catch {
       return json(
         request,
