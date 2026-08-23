@@ -1,12 +1,17 @@
 import { lookupResultSchema } from "../shared/lookup";
+import { consumeRateLimit } from "./rateLimit";
 
 interface Env {
   IPIFY_API_KEY: string;
   ALLOWED_ORIGIN?: string;
+  RATE_LIMIT_MAX?: string;
+  RATE_LIMIT_WINDOW_MS?: string;
 }
 
 const lookupPath = "/api/lookup";
 const validAddress = /^(?:[a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+$|^[a-fA-F0-9:.]+$/;
+const defaultRateLimitMax = 30;
+const defaultRateLimitWindowMs = 60_000;
 
 function corsHeaders(request: Request, env: Env) {
   const requestOrigin = request.headers.get("Origin");
@@ -31,11 +36,20 @@ function corsHeaders(request: Request, env: Env) {
   return headers;
 }
 
-function json(request: Request, env: Env, body: unknown, status = 200) {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: corsHeaders(request, env),
-  });
+function json(
+  request: Request,
+  env: Env,
+  body: unknown,
+  status = 200,
+  extraHeaders?: Record<string, string>,
+) {
+  const headers = corsHeaders(request, env);
+  if (extraHeaders) {
+    for (const [name, value] of Object.entries(extraHeaders)) {
+      headers.set(name, value);
+    }
+  }
+  return new Response(JSON.stringify(body), { status, headers });
 }
 
 function isIpAddress(value: string) {
@@ -82,6 +96,27 @@ export default {
       );
     }
 
+    const clientIp =
+      request.headers.get("CF-Connecting-IP")?.trim() ||
+      request.headers.get("X-NF-Client-Connection-IP")?.trim() ||
+      "anonymous";
+    const rateLimit = consumeRateLimit(
+      clientIp,
+      Number(env.RATE_LIMIT_MAX ?? "") || defaultRateLimitMax,
+      Number(env.RATE_LIMIT_WINDOW_MS ?? "") || defaultRateLimitWindowMs,
+    );
+    if (!rateLimit.allowed) {
+      return json(
+        request,
+        env,
+        {
+          error: "Too many lookups from your network. Please wait a minute.",
+        },
+        429,
+        { "Retry-After": String(rateLimit.retryAfterSeconds) },
+      );
+    }
+
     const submittedQuery = url.searchParams.get("q")?.trim() ?? "";
     if (
       submittedQuery &&
@@ -95,13 +130,11 @@ export default {
       );
     }
 
-    const connectingIp =
-      request.headers.get("CF-Connecting-IP")?.trim() ||
-      request.headers.get("X-NF-Client-Connection-IP")?.trim() ||
-      "";
     const query =
       submittedQuery ||
-      (connectingIp && !isPrivateAddress(connectingIp) ? connectingIp : "");
+      (clientIp !== "anonymous" && !isPrivateAddress(clientIp)
+        ? clientIp
+        : "");
     const providerUrl = new URL("https://geo.ipify.org/api/v2/country,city");
     providerUrl.searchParams.set("apiKey", env.IPIFY_API_KEY);
     if (query) {

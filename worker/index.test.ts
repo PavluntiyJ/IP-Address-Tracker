@@ -100,4 +100,70 @@ describe("lookup worker", () => {
       "203.0.113.42",
     );
   });
+
+  it("throttles bursts from one client and recovers after the window", async () => {
+    vi.useFakeTimers();
+    try {
+      vi.setSystemTime(1_000_000);
+      const fetchMock = vi
+        .fn()
+        .mockImplementation(() =>
+          Promise.resolve(
+            new Response(JSON.stringify(providerResult), { status: 200 }),
+          ),
+        );
+      vi.stubGlobal("fetch", fetchMock);
+      const throttledEnv = { ...env, RATE_LIMIT_MAX: "2" };
+      const makeRequest = () =>
+        new Request("https://api.example.com/api/lookup?q=8.8.8.8", {
+          headers: { "CF-Connecting-IP": "198.51.100.9" },
+        });
+
+      expect((await worker.fetch(makeRequest(), throttledEnv)).status).toBe(
+        200,
+      );
+      expect((await worker.fetch(makeRequest(), throttledEnv)).status).toBe(
+        200,
+      );
+
+      const limited = await worker.fetch(makeRequest(), throttledEnv);
+      expect(limited.status).toBe(429);
+      expect(Number(limited.headers.get("Retry-After"))).toBeGreaterThan(0);
+      expect(await limited.json()).toEqual({ error: expect.any(String) });
+      expect(fetchMock).toHaveBeenCalledTimes(2);
+
+      vi.advanceTimersByTime(60_001);
+      expect((await worker.fetch(makeRequest(), throttledEnv)).status).toBe(
+        200,
+      );
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("keeps other clients unthrottled while one is limited", async () => {
+    vi.useFakeTimers();
+    try {
+      vi.setSystemTime(2_000_000);
+      const fetchMock = vi
+        .fn()
+        .mockImplementation(() =>
+          Promise.resolve(
+            new Response(JSON.stringify(providerResult), { status: 200 }),
+          ),
+        );
+      vi.stubGlobal("fetch", fetchMock);
+      const throttledEnv = { ...env, RATE_LIMIT_MAX: "1" };
+      const from = (ip: string) =>
+        new Request("https://api.example.com/api/lookup?q=8.8.8.8", {
+          headers: { "CF-Connecting-IP": ip },
+        });
+
+      expect((await worker.fetch(from("198.51.100.31"), throttledEnv)).status).toBe(200);
+      expect((await worker.fetch(from("198.51.100.31"), throttledEnv)).status).toBe(429);
+      expect((await worker.fetch(from("203.0.113.77"), throttledEnv)).status).toBe(200);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
 });
