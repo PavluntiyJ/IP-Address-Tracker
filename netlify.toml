@@ -13,6 +13,10 @@
   function = "inject-csp"
   path = "/*"
 
+[[edge_functions]]
+  function = "lookup-geo"
+  path = "/api/lookup"
+
 [dev]
   command = "npm run dev"
   targetPort = 5173
