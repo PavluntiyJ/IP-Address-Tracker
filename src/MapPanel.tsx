@@ -22,6 +22,24 @@ function MapViewport({ location }: { location: LookupResult["location"] }) {
   return null;
 }
 
+function WheelZoomGate() {
+  const map = useMap();
+
+  useEffect(() => {
+    map.scrollWheelZoom.disable();
+    const enable = () => map.scrollWheelZoom.enable();
+    const disable = () => map.scrollWheelZoom.disable();
+    map.on("click", enable);
+    map.on("mouseout", disable);
+    return () => {
+      map.off("click", enable);
+      map.off("mouseout", disable);
+    };
+  }, [map]);
+
+  return null;
+}
+
 export function MapPanel({ result }: { result: LookupResult | null }) {
   const position: [number, number] = result
     ? [result.location.lat, result.location.lng]
@@ -40,6 +58,7 @@ export function MapPanel({ result }: { result: LookupResult | null }) {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
+        <WheelZoomGate />
         {result ? (
           <>
             <MapViewport location={result.location} />
