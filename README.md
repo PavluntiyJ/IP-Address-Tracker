@@ -129,11 +129,11 @@ Both Netlify and Cloudflare provide free tiers suitable for this project.
 
 ## Environment Variables
 
-| Variable               | Location                                                   | Purpose                                                  |
-| ---------------------- | ---------------------------------------------------------- | -------------------------------------------------------- |
-| `IPIFY_API_KEY`        | Netlify environment, `.env`, Worker secret, or `.dev.vars` | Authenticates server-side Geo.IPify requests             |
-| `ALLOWED_ORIGIN`       | `wrangler.jsonc`                                           | Restricts browser access when using Cloudflare           |
-| `VITE_API_URL`         | Frontend build environment                                 | Overrides the default same-origin `/api/lookup` endpoint |
+| Variable               | Location                                                   | Purpose                                                    |
+| ---------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
+| `IPIFY_API_KEY`        | Netlify environment, `.env`, Worker secret, or `.dev.vars` | Authenticates server-side Geo.IPify requests               |
+| `ALLOWED_ORIGIN`       | `wrangler.jsonc`                                           | Restricts browser access when using Cloudflare             |
+| `VITE_API_URL`         | Frontend build environment                                 | Overrides the default same-origin `/api/lookup` endpoint   |
 | `RATE_LIMIT_MAX`       | Netlify environment or Worker vars                         | Requests allowed per client inside the window (default 30) |
 | `RATE_LIMIT_WINDOW_MS` | Netlify environment or Worker vars                         | Rate-limit window length in milliseconds (default 60000)   |
 

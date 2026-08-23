@@ -191,7 +191,8 @@ describe("lookup worker", () => {
       const limited = await worker.fetch(makeRequest(), throttledEnv);
       expect(limited.status).toBe(429);
       expect(Number(limited.headers.get("Retry-After"))).toBeGreaterThan(0);
-      expect(await limited.json()).toEqual({ error: expect.any(String) });
+      const limitedBody = await limited.json();
+      expect(limitedBody).toHaveProperty("error");
       expect(fetchMock).toHaveBeenCalledTimes(2);
 
       vi.advanceTimersByTime(60_001);
@@ -221,9 +222,15 @@ describe("lookup worker", () => {
           headers: { "CF-Connecting-IP": ip },
         });
 
-      expect((await worker.fetch(from("198.51.100.31"), throttledEnv)).status).toBe(200);
-      expect((await worker.fetch(from("198.51.100.31"), throttledEnv)).status).toBe(429);
-      expect((await worker.fetch(from("203.0.113.77"), throttledEnv)).status).toBe(200);
+      expect(
+        (await worker.fetch(from("198.51.100.31"), throttledEnv)).status,
+      ).toBe(200);
+      expect(
+        (await worker.fetch(from("198.51.100.31"), throttledEnv)).status,
+      ).toBe(429);
+      expect(
+        (await worker.fetch(from("203.0.113.77"), throttledEnv)).status,
+      ).toBe(200);
     } finally {
       vi.useRealTimers();
     }

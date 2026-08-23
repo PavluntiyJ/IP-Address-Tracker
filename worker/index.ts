@@ -133,9 +133,7 @@ export default {
 
     const query =
       submittedQuery ||
-      (clientIp !== "anonymous" && !isPrivateAddress(clientIp)
-        ? clientIp
-        : "");
+      (clientIp !== "anonymous" && !isPrivateAddress(clientIp) ? clientIp : "");
     const providerUrl = new URL("https://geo.ipify.org/api/v2/country,city");
     providerUrl.searchParams.set("apiKey", env.IPIFY_API_KEY);
     if (query) {
