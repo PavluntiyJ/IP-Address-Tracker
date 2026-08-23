@@ -22,6 +22,7 @@ Version 2.0 is a complete React and TypeScript rebuild of the [Frontend Mentor I
 - Responsive desktop and mobile interface
 - Accessible loading, validation, and error states
 - Abort-safe requests that prevent stale searches from replacing newer results
+- Per-visitor request throttling that protects the provider quota
 - Server-side Geo.IPify access with no API credential in the browser bundle
 - Runtime response validation shared by every deployment target
 - Automated tests, strict linting, formatting, builds, and GitHub CI
@@ -128,17 +129,22 @@ Both Netlify and Cloudflare provide free tiers suitable for this project.
 
 ## Environment Variables
 
-| Variable         | Location                                                   | Purpose                                                  |
-| ---------------- | ---------------------------------------------------------- | -------------------------------------------------------- |
-| `IPIFY_API_KEY`  | Netlify environment, `.env`, Worker secret, or `.dev.vars` | Authenticates server-side Geo.IPify requests             |
-| `ALLOWED_ORIGIN` | `wrangler.jsonc`                                           | Restricts browser access when using Cloudflare           |
-| `VITE_API_URL`   | Frontend build environment                                 | Overrides the default same-origin `/api/lookup` endpoint |
+| Variable               | Location                                                   | Purpose                                                  |
+| ---------------------- | ---------------------------------------------------------- | -------------------------------------------------------- |
+| `IPIFY_API_KEY`        | Netlify environment, `.env`, Worker secret, or `.dev.vars` | Authenticates server-side Geo.IPify requests             |
+| `ALLOWED_ORIGIN`       | `wrangler.jsonc`                                           | Restricts browser access when using Cloudflare           |
+| `VITE_API_URL`         | Frontend build environment                                 | Overrides the default same-origin `/api/lookup` endpoint |
+| `RATE_LIMIT_MAX`       | Netlify environment or Worker vars                         | Requests allowed per client inside the window (default 30) |
+| `RATE_LIMIT_WINDOW_MS` | Netlify environment or Worker vars                         | Rate-limit window length in milliseconds (default 60000)   |
 
 ## Security
 
 - Provider credentials are excluded from Git and never embedded in frontend assets.
 - Search input is length-limited and validated before contacting Geo.IPify.
+- Per-client rate limiting with `Retry-After` guards the provider quota from abuse.
+- Repeated explicit queries are briefly cacheable at the edge; personal lookups are never cached.
 - Provider failures are converted into safe client-facing messages.
-- API responses use `Cache-Control: no-store`.
-- Production responses include frame, MIME-sniffing, referrer, and browser-permission headers.
+- API responses use `Cache-Control: no-store` unless explicitly queried.
+- Production responses include a restrictive Content-Security-Policy, HSTS, frame, MIME-sniffing, referrer, and browser-permission headers.
+- Web fonts are self-hosted; no third-party font requests leave the client.
 - CORS is restricted when the standalone Cloudflare deployment is used.
