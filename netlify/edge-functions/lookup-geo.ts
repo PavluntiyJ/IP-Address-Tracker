@@ -1,5 +1,5 @@
 import type { Context } from "@netlify/edge-functions";
-import { lookupResultSchema, type LookupResult } from "../../shared/lookup";
+import { lookupResultSchema, type LookupResult } from "../../shared/lookup.ts";
 
 export interface EdgeGeoInput {
   ip: string | null;
