@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { describe, expect, it } from "vitest";
-import { buildGeoLookup, utcOffset } from "./lookup-geo";
+import { buildGeoLookup, utcOffset } from "../edge-functions/lookup-geo";
 
 const winter = new Date("2026-01-15T12:00:00Z");
 
