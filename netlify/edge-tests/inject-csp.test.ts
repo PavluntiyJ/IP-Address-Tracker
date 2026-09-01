@@ -20,6 +20,7 @@ describe("injectCsp", () => {
     const csp = response.headers.get("Content-Security-Policy");
 
     expect(csp).toContain("connect-src 'self' https://tiles.openfreemap.org");
+    expect(csp).toContain("font-src 'self' data:");
     expect(csp).toContain("worker-src 'self' blob:");
     expect(csp).not.toContain("cartocdn.com");
     expect(csp).not.toContain("tile.openstreetmap.org");

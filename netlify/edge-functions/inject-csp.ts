@@ -4,7 +4,7 @@ const csp = [
   "default-src 'self'",
   "script-src 'self'",
   "style-src 'self' 'unsafe-inline'",
-  "font-src 'self'",
+  "font-src 'self' data:",
   "img-src 'self' blob: data:",
   "connect-src 'self' https://tiles.openfreemap.org",
   "worker-src 'self' blob:",
