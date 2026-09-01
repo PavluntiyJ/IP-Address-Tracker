@@ -398,7 +398,6 @@ main {
 .map-wrap {
   position: relative;
   margin-top: -1px;
-  padding-top: 58px;
   background: #dfe5df;
 }
 
@@ -407,39 +406,56 @@ main {
   align-items: center;
   justify-content: space-between;
   width: min(1240px, calc(100% - clamp(48px, 12vw, 192px)));
-  height: 58px;
+  height: 52px;
   margin: 0 auto;
   color: #5f716e;
 }
 
 .map-panel {
   position: relative;
-  height: clamp(430px, 58vh, 690px);
+  height: clamp(560px, 72vh, 840px);
   border-top: 1px solid #cbd3cc;
   background: #dce3dd;
 }
 
-.leaflet-container {
+.map-container,
+.maplibregl-map {
   width: 100%;
   height: 100%;
   background: #dce3dd;
   font-family: "Manrope Variable", Arial, sans-serif;
 }
 
-.leaflet-control-zoom {
+.maplibregl-ctrl-group {
   overflow: hidden;
   border: 0 !important;
   border-radius: 2px !important;
   box-shadow: 0 8px 24px rgba(16, 42, 46, 0.2) !important;
 }
 
-.leaflet-control-zoom a {
+.maplibregl-ctrl-group button {
   color: #163034 !important;
   background: #fbfbf6 !important;
 }
 
+.maplibregl-popup-content {
+  padding: 12px 15px;
+  border-radius: 2px;
+  color: #163034;
+  background: #fbfbf6;
+  box-shadow: 0 8px 24px rgba(16, 42, 46, 0.18);
+  font-family: "Manrope Variable", Arial, sans-serif;
+}
+
+.maplibregl-popup-close-button {
+  padding: 2px 6px;
+  color: #52635f;
+}
+
 .trace-marker {
   position: relative;
+  width: 36px;
+  height: 42px;
   background: transparent;
 }
 
@@ -646,12 +662,8 @@ main {
     font-size: 1.1rem;
   }
 
-  .map-wrap {
-    padding-top: 42px;
-  }
-
   .map-meta {
-    height: 50px;
+    height: 46px;
   }
 
   .map-meta span:last-child {
@@ -659,7 +671,7 @@ main {
   }
 
   .map-panel {
-    height: 480px;
+    height: clamp(520px, 68svh, 680px);
   }
 }
 

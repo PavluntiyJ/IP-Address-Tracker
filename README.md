@@ -19,7 +19,7 @@ Version 2.0 is a complete React and TypeScript rebuild of the [Frontend Mentor I
 - Visitor lookups served from Netlify edge geo data at zero provider cost
 - IPv4, IPv6, and domain searches
 - Approximate city, region, timezone, ISP, and coordinates
-- Persistent Leaflet map with animated coordinate transitions
+- Persistent MapLibre map with animated coordinate transitions
 - Responsive desktop and mobile interface
 - Accessible loading, validation, and error states
 - Abort-safe requests that prevent stale searches from replacing newer results
@@ -41,7 +41,7 @@ Netlify Function adapter
 Shared validated lookup handler ---- server-only API key
         |
         v
-Geo.IPify API ----> normalized JSON ----> Leaflet map
+Geo.IPify API ----> normalized JSON ----> MapLibre map
 ```
 
 Production uses a same-origin Netlify Function, so the browser does not need CORS configuration or a public provider key. Visitor auto-lookups are answered directly by a Netlify Edge Function from native geo data without contacting any provider, so the Geo.IPify quota is spent only on explicit IP and domain searches. The same handler can also be deployed as a Cloudflare Worker through `wrangler.jsonc`.
@@ -50,7 +50,7 @@ Production uses a same-origin Netlify Function, so the browser does not need COR
 
 - React 19 and TypeScript 6
 - Vite 8
-- Leaflet and React Leaflet
+- MapLibre GL and OpenFreeMap vector tiles
 - Zod runtime validation
 - Netlify Functions, Edge Functions, and optional Cloudflare Workers
 - Vitest and Testing Library

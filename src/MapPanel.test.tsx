@@ -1,51 +1,52 @@
-import { render, screen } from "@testing-library/react";
-import type { ReactNode } from "react";
+import { render } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { MapPanel } from "./MapPanel";
 
-vi.mock("leaflet", () => ({
-  default: {
-    divIcon: vi.fn(() => ({})),
+const { mapConstructor } = vi.hoisted(() => ({
+  mapConstructor: vi.fn(),
+}));
+
+vi.mock("maplibre-gl", () => ({
+  AttributionControl: class AttributionControl {},
+  Map: class Map {
+    constructor(options: unknown) {
+      mapConstructor(options);
+    }
+
+    addControl() {}
+    flyTo() {}
+    remove() {}
+  },
+  Marker: class Marker {
+    addTo() {
+      return this;
+    }
+
+    setLngLat() {
+      return this;
+    }
+
+    setPopup() {
+      return this;
+    }
+  },
+  NavigationControl: class NavigationControl {},
+  Popup: class Popup {
+    setDOMContent() {
+      return this;
+    }
   },
 }));
 
-vi.mock("react-leaflet", () => ({
-  MapContainer: ({ children }: { children: ReactNode }) => (
-    <div>{children}</div>
-  ),
-  Marker: ({ children }: { children: ReactNode }) => <div>{children}</div>,
-  Popup: ({ children }: { children: ReactNode }) => <div>{children}</div>,
-  TileLayer: ({ attribution, url }: { attribution: string; url: string }) => (
-    <div
-      data-testid="tile-layer"
-      data-attribution={attribution}
-      data-url={url}
-    />
-  ),
-  useMap: () => ({
-    flyTo: vi.fn(),
-    off: vi.fn(),
-    on: vi.fn(),
-    scrollWheelZoom: {
-      disable: vi.fn(),
-      enable: vi.fn(),
-    },
-  }),
-}));
-
 describe("MapPanel", () => {
-  it("uses the keyless OpenStreetMap tile service with attribution", () => {
+  it("uses the neutral keyless map style with wheel zoom enabled", () => {
     render(<MapPanel result={null} />);
 
-    const tileLayer = screen.getByTestId("tile-layer");
-    expect(tileLayer).toHaveAttribute(
-      "data-url",
-      "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+    expect(mapConstructor).toHaveBeenCalledWith(
+      expect.objectContaining({
+        style: "https://tiles.openfreemap.org/styles/positron",
+        scrollZoom: true,
+      }),
     );
-    expect(tileLayer).toHaveAttribute(
-      "data-attribution",
-      expect.stringContaining("OpenStreetMap"),
-    );
-    expect(tileLayer.getAttribute("data-attribution")).not.toContain("CARTO");
   });
 });
