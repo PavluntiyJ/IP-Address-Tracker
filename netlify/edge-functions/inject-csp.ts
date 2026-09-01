@@ -5,7 +5,7 @@ const csp = [
   "script-src 'self'",
   "style-src 'self' 'unsafe-inline'",
   "font-src 'self'",
-  "img-src 'self' https://*.basemaps.cartocdn.com",
+  "img-src 'self' https://tile.openstreetmap.org",
   "connect-src 'self'",
   "object-src 'none'",
   "base-uri 'self'",
