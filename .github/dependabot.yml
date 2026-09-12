@@ -3,9 +3,13 @@ updates:
   - package-ecosystem: npm
     directory: /
     schedule:
-      interval: weekly
-    open-pull-requests-limit: 5
+      interval: monthly
+    open-pull-requests-limit: 2
+    cooldown:
+      default-days: 7
     groups:
+      production-dependencies:
+        dependency-type: production
       development-dependencies:
         dependency-type: development
     ignore:
@@ -17,3 +21,9 @@ updates:
     directory: /
     schedule:
       interval: monthly
+    cooldown:
+      default-days: 7
+    groups:
+      github-actions:
+        patterns:
+          - "*"
