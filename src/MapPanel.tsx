@@ -4,7 +4,9 @@ import {
   Marker,
   NavigationControl,
   Popup,
+  setWorkerUrl,
 } from "maplibre-gl";
+import mapWorkerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 import { useEffect, useRef } from "react";
 import type { LookupResult } from "../shared/lookup";
 import "maplibre-gl/dist/maplibre-gl.css";
@@ -50,6 +52,8 @@ export function MapPanel({ result }: { result: LookupResult | null }) {
   useEffect(() => {
     if (!containerRef.current) return;
 
+    // Emit the worker as a build asset instead of relying on a relative library URL.
+    setWorkerUrl(mapWorkerUrl);
     const map = new LibreMap({
       container: containerRef.current,
       style: mapStyle,
