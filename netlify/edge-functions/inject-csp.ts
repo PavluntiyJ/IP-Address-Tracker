@@ -18,9 +18,9 @@ const localHosts = new Set(["localhost", "127.0.0.1", "[::1]"]);
 
 export default async function injectCsp(request: Request, context: Context) {
   const response = await context.next();
-  const host = request.headers.get("host")?.split(":")[0] ?? "";
-  if (host && !localHosts.has(host)) {
-    response.headers.set("Content-Security-Policy", csp);
-  }
-  return response;
+  if (localHosts.has(new URL(request.url).hostname)) return response;
+
+  const securedResponse = new Response(response.body, response);
+  securedResponse.headers.set("Content-Security-Policy", csp);
+  return securedResponse;
 }

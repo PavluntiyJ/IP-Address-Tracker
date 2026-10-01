@@ -20,7 +20,7 @@ export function utcOffset(timezone: string, now: Date = new Date()): string {
     }).formatToParts(now);
     const label =
       parts.find((part) => part.type === "timeZoneName")?.value ?? "";
-    return label.replace("GMT", "");
+    return label === "GMT" ? "+00:00" : label.replace("GMT", "");
   } catch {
     return "";
   }
@@ -38,7 +38,7 @@ export function buildGeoLookup(
     return null;
   }
 
-  return lookupResultSchema.parse({
+  const result = lookupResultSchema.safeParse({
     ip: input.ip,
     location: {
       city: input.city ?? "",
@@ -51,6 +51,7 @@ export function buildGeoLookup(
     },
     isp: "Unknown network",
   });
+  return result.success ? result.data : null;
 }
 
 const localHosts = new Set(["localhost", "127.0.0.1", "[::1]"]);

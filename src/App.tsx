@@ -48,6 +48,7 @@ export default function App() {
 
     try {
       const nextResult = await lookupAddress(search, controller.signal);
+      if (controller.signal.aborted) return;
       setResult(nextResult);
       setLoadState("success");
     } catch (lookupError) {
@@ -88,6 +89,7 @@ export default function App() {
     event.preventDefault();
     const search = query.trim();
     if (!search) {
+      controllerRef.current?.abort();
       setLoadState("error");
       setError("Enter an IP address or domain to begin a search.");
       return;

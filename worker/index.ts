@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { lookupResultSchema } from "../shared/lookup";
 import { consumeRateLimit } from "./rateLimit";
 
@@ -9,10 +10,15 @@ interface Env {
 }
 
 const lookupPath = "/api/lookup";
-const validAddress =
-  /^(?:[a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+$|^\d{1,3}(?:\.\d{1,3}){3}$|^(?!.*:::)(?:[a-fA-F0-9]{0,4}:){2,7}[a-fA-F0-9]{0,4}$/;
+const ipAddressSchema = z.union([z.ipv4(), z.ipv6()]);
+const domainLabel = /^[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$/;
 const defaultRateLimitMax = 30;
 const defaultRateLimitWindowMs = 60_000;
+
+function positiveInteger(value: string | undefined, fallback: number) {
+  const parsed = Number(value);
+  return Number.isSafeInteger(parsed) && parsed > 0 ? parsed : fallback;
+}
 
 function corsHeaders(request: Request, env: Env) {
   const requestOrigin = request.headers.get("Origin");
@@ -54,7 +60,17 @@ function json(
 }
 
 function isIpAddress(value: string) {
-  return value.includes(":") || /^(?:\d{1,3}\.){3}\d{1,3}$/.test(value);
+  return ipAddressSchema.safeParse(value).success;
+}
+
+function isValidAddress(value: string) {
+  if (value.length > 253) return false;
+  if (isIpAddress(value)) return true;
+  if (value.includes(":") || /^[\d.]+$/.test(value)) return false;
+  return value
+    .replace(/\.$/, "")
+    .split(".")
+    .every((label) => domainLabel.test(label));
 }
 
 function isPrivateAddress(value: string) {
@@ -103,8 +119,8 @@ export default {
       "anonymous";
     const rateLimit = consumeRateLimit(
       clientIp,
-      Number(env.RATE_LIMIT_MAX ?? "") || defaultRateLimitMax,
-      Number(env.RATE_LIMIT_WINDOW_MS ?? "") || defaultRateLimitWindowMs,
+      positiveInteger(env.RATE_LIMIT_MAX, defaultRateLimitMax),
+      positiveInteger(env.RATE_LIMIT_WINDOW_MS, defaultRateLimitWindowMs),
     );
     if (!rateLimit.allowed) {
       return json(
@@ -119,10 +135,7 @@ export default {
     }
 
     const submittedQuery = url.searchParams.get("q")?.trim() ?? "";
-    if (
-      submittedQuery &&
-      (submittedQuery.length > 253 || !validAddress.test(submittedQuery))
-    ) {
+    if (submittedQuery && !isValidAddress(submittedQuery)) {
       return json(
         request,
         env,
@@ -146,17 +159,25 @@ export default {
     try {
       const providerResponse = await fetch(providerUrl, {
         headers: { Accept: "application/json" },
+        signal: AbortSignal.timeout(10_000),
       });
       const providerBody: unknown = await providerResponse
         .json()
         .catch(() => null);
 
       if (!providerResponse.ok) {
-        const status = providerResponse.status === 429 ? 429 : 400;
+        const status =
+          providerResponse.status === 429
+            ? 429
+            : providerResponse.status >= 500
+              ? 502
+              : 400;
         const message =
           status === 429
             ? "The lookup limit has been reached. Try again shortly."
-            : "That IP address or domain could not be located.";
+            : status === 502
+              ? "The lookup service is temporarily unavailable."
+              : "That IP address or domain could not be located.";
         return json(request, env, { error: message }, status);
       }
 

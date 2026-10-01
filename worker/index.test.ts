@@ -24,6 +24,90 @@ const providerResult = {
 describe("lookup worker", () => {
   afterEach(() => vi.unstubAllGlobals());
 
+  it.each([
+    "999.999.999.999",
+    "256.0.0.1",
+    "1:2:3",
+    "2001::db8::1",
+    "-example.com",
+    "example-.com",
+    `${"a".repeat(64)}.com`,
+  ])(
+    "rejects invalid address %s without spending provider quota",
+    async (query) => {
+      const fetchMock = vi.fn();
+      vi.stubGlobal("fetch", fetchMock);
+      const response = await worker.fetch(
+        new Request(
+          `https://api.example.com/api/lookup?q=${encodeURIComponent(query)}`,
+        ),
+        { ...env, RATE_LIMIT_MAX: "100" },
+      );
+
+      expect(response.status).toBe(400);
+      expect(fetchMock).not.toHaveBeenCalled();
+    },
+  );
+
+  it("accepts IPv4-mapped IPv6 addresses", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(new Response(JSON.stringify(providerResult)));
+    vi.stubGlobal("fetch", fetchMock);
+    const response = await worker.fetch(
+      new Request(
+        "https://api.example.com/api/lookup?q=%3A%3Affff%3A192.0.2.1",
+      ),
+      env,
+    );
+
+    expect(response.status).toBe(200);
+    expect(
+      new URL(String(fetchMock.mock.calls[0]?.[0])).searchParams.get(
+        "ipAddress",
+      ),
+    ).toBe("::ffff:192.0.2.1");
+  });
+
+  it("reports provider outages as service errors", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(new Response("unavailable", { status: 503 })),
+    );
+    const response = await worker.fetch(
+      new Request("https://api.example.com/api/lookup?q=8.8.8.8"),
+      env,
+    );
+
+    expect(response.status).toBe(502);
+    expect(await response.json()).toEqual({
+      error: "The lookup service is temporarily unavailable.",
+    });
+  });
+
+  it("falls back to the default limit for invalid configuration", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockImplementation(() =>
+        Promise.resolve(new Response(JSON.stringify(providerResult))),
+      );
+    vi.stubGlobal("fetch", fetchMock);
+    const request = () =>
+      new Request("https://api.example.com/api/lookup?q=8.8.8.8", {
+        headers: { "CF-Connecting-IP": "198.51.100.200" },
+      });
+    const invalidEnv = {
+      ...env,
+      RATE_LIMIT_MAX: "-1",
+      RATE_LIMIT_WINDOW_MS: "Infinity",
+    };
+    for (let index = 0; index < 30; index++) {
+      expect((await worker.fetch(request(), invalidEnv)).status).toBe(200);
+    }
+    expect((await worker.fetch(request(), invalidEnv)).status).toBe(429);
+    expect(fetchMock).toHaveBeenCalledTimes(30);
+  });
+
   it("forwards a valid domain without exposing the provider key", async () => {
     const fetchMock = vi
       .fn()

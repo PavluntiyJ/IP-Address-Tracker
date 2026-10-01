@@ -50,6 +50,8 @@ describe("buildGeoLookup", () => {
     expect(buildGeoLookup({ ...input, ip: null })).toBeNull();
     expect(buildGeoLookup({ ...input, latitude: undefined })).toBeNull();
     expect(buildGeoLookup({ ...input, longitude: Number.NaN })).toBeNull();
+    expect(buildGeoLookup({ ...input, latitude: 91 })).toBeNull();
+    expect(buildGeoLookup({ ...input, longitude: -181 })).toBeNull();
   });
 
   it("applies schema defaults for sparse geo payloads", () => {

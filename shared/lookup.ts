@@ -8,8 +8,8 @@ export const lookupResultSchema = z.object({
     country: z.string().default(""),
     postalCode: z.string().default(""),
     timezone: z.string().default(""),
-    lat: z.number().finite(),
-    lng: z.number().finite(),
+    lat: z.number().min(-90).max(90),
+    lng: z.number().min(-180).max(180),
   }),
   isp: z.string().default("Unknown network"),
 });
