@@ -55,7 +55,7 @@ Production uses a same-origin Netlify Function, so the browser does not need COR
 - Netlify Functions, Edge Functions, and optional Cloudflare Workers
 - Vitest and Testing Library
 - ESLint and Prettier
-- GitHub Actions and Dependabot
+- GitHub Actions
 
 ## Project Structure
 
@@ -103,6 +103,8 @@ npm run check
 ```
 
 This runs formatting validation, typed ESLint rules, all tests, TypeScript project builds, and the Vite production build. The same command runs automatically through GitHub Actions for every push and pull request targeting `main`.
+
+Dependency updates are maintained manually. Dependabot version updates, security updates, and alerts are disabled for this repository. Run `npm outdated` and `npm audit` when updating dependencies.
 
 ## Deployment
 
